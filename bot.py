@@ -1,27 +1,11 @@
 import os
 import logging
 from dotenv import load_dotenv
-from telegram.ext import (
-    Application,
-    CommandHandler,
-    ConversationHandler,
-    MessageHandler,
-    filters,
-)
+from telegram.ext import Application, CommandHandler, ConversationHandler, MessageHandler, filters
 
+# IMPORTANT: Import everything from handlers properly
+import handlers
 from handlers import BotHandlers
-from handlers import (
-    WAITING_FOR_INPUT,
-    WAITING_FOR_FRACTION,
-    WAITING_FOR_PERCENTAGE,
-    WAITING_FOR_DISCOUNT,
-    WAITING_FOR_AGE,
-    WAITING_FOR_DATE,
-    WAITING_FOR_LENGTH,
-    WAITING_FOR_WEIGHT,
-    WAITING_FOR_TEMPERATURE,
-    WAITING_FOR_AVERAGE,
-)
 
 # Load environment variables
 load_dotenv()
@@ -35,99 +19,97 @@ logger = logging.getLogger(__name__)
 
 def main():
     """Start the bot"""
-    # Get token from environment
     token = os.getenv('BOT_TOKEN')
     if not token:
         logger.error("No BOT_TOKEN found in .env file!")
         return
     
-    # Create application
     application = Application.builder().token(token).build()
     
     # Initialize handlers
-    handlers = BotHandlers()
+    bot_handlers = BotHandlers()
     
-    # Add conversation handlers
+    # Add conversation handlers with proper state references
     conv_handlers = [
         # Calculator
         ConversationHandler(
-            entry_points=[CommandHandler('calc', handlers.calc_start)],
+            entry_points=[CommandHandler('calc', bot_handlers.calc_start)],
             states={
-                WAITING_FOR_INPUT: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.calc_input)]
+                handlers.WAITING_FOR_INPUT: [MessageHandler(filters.TEXT & ~filters.COMMAND, bot_handlers.calc_input)]
             },
-            fallbacks=[CommandHandler('cancel', handlers.cancel)]
+            fallbacks=[CommandHandler('cancel', bot_handlers.cancel)]
         ),
         # Percentage
         ConversationHandler(
-            entry_points=[CommandHandler('percentage', handlers.percentage_start)],
+            entry_points=[CommandHandler('percentage', bot_handlers.percentage_start)],
             states={
-                WAITING_FOR_PERCENTAGE: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.percentage_input)]
+                handlers.WAITING_FOR_PERCENTAGE: [MessageHandler(filters.TEXT & ~filters.COMMAND, bot_handlers.percentage_input)]
             },
-            fallbacks=[CommandHandler('cancel', handlers.cancel)]
+            fallbacks=[CommandHandler('cancel', bot_handlers.cancel)]
         ),
         # Fraction
         ConversationHandler(
-            entry_points=[CommandHandler('fraction', handlers.fraction_start)],
+            entry_points=[CommandHandler('fraction', bot_handlers.fraction_start)],
             states={
-                WAITING_FOR_FRACTION: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.fraction_input)]
+                handlers.WAITING_FOR_FRACTION: [MessageHandler(filters.TEXT & ~filters.COMMAND, bot_handlers.fraction_input)]
             },
-            fallbacks=[CommandHandler('cancel', handlers.cancel)]
+            fallbacks=[CommandHandler('cancel', bot_handlers.cancel)]
         ),
         # Average
         ConversationHandler(
-            entry_points=[CommandHandler('average', handlers.average_start)],
+            entry_points=[CommandHandler('average', bot_handlers.average_start)],
             states={
-                WAITING_FOR_AVERAGE: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.average_input)]
+                handlers.WAITING_FOR_AVERAGE: [MessageHandler(filters.TEXT & ~filters.COMMAND, bot_handlers.average_input)]
             },
-            fallbacks=[CommandHandler('cancel', handlers.cancel)]
+            fallbacks=[CommandHandler('cancel', bot_handlers.cancel)]
         ),
         # Discount
         ConversationHandler(
-            entry_points=[CommandHandler('discount', handlers.discount_start)],
+            entry_points=[CommandHandler('discount', bot_handlers.discount_start)],
             states={
-                WAITING_FOR_DISCOUNT: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.discount_input)]
+                handlers.WAITING_FOR_DISCOUNT: [MessageHandler(filters.TEXT & ~filters.COMMAND, bot_handlers.discount_input)]
             },
-            fallbacks=[CommandHandler('cancel', handlers.cancel)]
+            fallbacks=[CommandHandler('cancel', bot_handlers.cancel)]
         ),
         # Age
         ConversationHandler(
-            entry_points=[CommandHandler('age', handlers.age_start)],
+            entry_points=[CommandHandler('age', bot_handlers.age_start)],
             states={
-                WAITING_FOR_AGE: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.age_input)]
+                handlers.WAITING_FOR_AGE: [MessageHandler(filters.TEXT & ~filters.COMMAND, bot_handlers.age_input)]
             },
-            fallbacks=[CommandHandler('cancel', handlers.cancel)]
+            fallbacks=[CommandHandler('cancel', bot_handlers.cancel)]
         ),
         # Date
         ConversationHandler(
-            entry_points=[CommandHandler('date', handlers.date_start)],
+            entry_points=[CommandHandler('date', bot_handlers.date_start)],
             states={
-                WAITING_FOR_DATE: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.date_input)]
+                handlers.WAITING_FOR_DATE: [MessageHandler(filters.TEXT & ~filters.COMMAND, bot_handlers.date_input)]
             },
-            fallbacks=[CommandHandler('cancel', handlers.cancel)]
+            fallbacks=[CommandHandler('cancel', bot_handlers.cancel)]
         ),
         # Length
         ConversationHandler(
-            entry_points=[CommandHandler('length', handlers.length_start)],
+            entry_points=[CommandHandler('length', bot_handlers.length_start)],
             states={
-                WAITING_FOR_LENGTH: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.length_input)]
+                handlers.WAITING_FOR_LENGTH: [MessageHandler(filters.TEXT & ~filters.COMMAND, bot_handlers.length_input)]
             },
-            fallbacks=[CommandHandler('cancel', handlers.cancel)]
+            fallbacks=[CommandHandler('cancel', bot_handlers.cancel)]
         ),
         # Weight
         ConversationHandler(
-            entry_points=[CommandHandler('weight', handlers.weight_start)],
+            entry_points=[CommandHandler('weight', bot_handlers.weight_start)],
             states={
-                WAITING_FOR_WEIGHT: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.weight_input)]
+                handlers.WAITING_FOR_WEIGHT: [MessageHandler(filters.TEXT & ~filters.COMMAND, bot_handlers.weight_input)]
             },
-            fallbacks=[CommandHandler('cancel', handlers.cancel)]
+            fallbacks=[CommandHandler('cancel', bot_handlers.cancel)]
         ),
         # Temperature
         ConversationHandler(
-            entry_points=[CommandHandler('temp', handlers.temp_start)],
+            entry_points=[CommandHandler('temp', bot_handlers.temp_start)],
             states={
-                WAITING_FOR_TEMPERATURE: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.temp_input)]
+                handlers.WAITING_FOR_TEMPERATURE: [MessageHandler(filters.TEXT & ~filters.COMMAND, bot_handlers.temp_input)]
             },
-            fallbacks=[CommandHandler('cancel', handlers.cancel)]
+            fallbacks=[CommandHandler('cancel', bot_handlers.cancel)]
         ),
     ]
     
@@ -136,11 +118,11 @@ def main():
         application.add_handler(handler)
     
     # Add basic command handlers
-    application.add_handler(CommandHandler('start', handlers.start))
-    application.add_handler(CommandHandler('help', handlers.help_command))
+    application.add_handler(CommandHandler('start', bot_handlers.start))
+    application.add_handler(CommandHandler('help', bot_handlers.help_command))
     
     # Add error handler
-    application.add_error_handler(handlers.error_handler)
+    application.add_error_handler(bot_handlers.error_handler)
     
     # Start the bot
     logger.info("Bot is starting...")
