@@ -88,7 +88,7 @@ class CalculatorUtils:
             
             if days < 0:
                 months -= 1
-                days += 30  # Approximate
+                days += 30
             if months < 0:
                 years -= 1
                 months += 12
@@ -154,7 +154,6 @@ class UnitConverter:
             return "❌ Invalid unit! Available: mm, cm, m, km, in, ft, yd, mi"
         
         try:
-            # Convert to meters then to target
             in_meters = value * units[from_unit]
             result = in_meters / units[to_unit]
             return f"✅ {value} {from_unit} = {result:.6f} {to_unit}"
