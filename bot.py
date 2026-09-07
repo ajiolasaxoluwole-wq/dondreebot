@@ -9,7 +9,8 @@ from telegram.ext import (
     filters,
 )
 
-from handlers import BotHandlers, (
+from handlers import BotHandlers
+from handlers import (
     WAITING_FOR_INPUT,
     WAITING_FOR_FRACTION,
     WAITING_FOR_PERCENTAGE,
