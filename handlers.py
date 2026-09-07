@@ -1,4 +1,4 @@
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler
 from utils import calc_utils, unit_converter
 
@@ -39,8 +39,6 @@ I'm your all-in-one calculation and conversion assistant!
 
 *How to use:*
 Simply click on a command and follow the instructions!
-
-*Need support?* Contact @your_support_username
 """
         await update.message.reply_text(welcome_text, parse_mode='Markdown')
     
@@ -97,7 +95,7 @@ Simply click on a command and follow the instructions!
         """Process calculator input"""
         expression = update.message.text
         result = calc_utils.basic_calc(expression)
-        await update.message.reply_text(result, parse_mode='Markdown')
+        await update.message.reply_text(result)
         return ConversationHandler.END
     
     # ---------- PERCENTAGE HANDLERS ----------
@@ -377,7 +375,7 @@ Simply click on a command and follow the instructions!
     @staticmethod
     async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Cancel ongoing conversation"""
-        await update.message.reply_text("Operation cancelled. Type /start to see commands.")
+        await update.message.reply_text("❌ Operation cancelled. Type /start to see commands.")
         return ConversationHandler.END
     
     @staticmethod
