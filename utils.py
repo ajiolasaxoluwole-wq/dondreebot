@@ -201,6 +201,10 @@ class UnitConverter:
                 result = value + 273.15
             elif from_unit == 'K' and to_unit == 'C':
                 result = value - 273.15
+            elif from_unit == 'F' and to_unit == 'K':
+                result = (value - 32) * 5/9 + 273.15
+            elif from_unit == 'K' and to_unit == 'F':
+                result = (value - 273.15) * 9/5 + 32
             else:
                 return "❌ Invalid conversion! Use C, F, or K"
             
