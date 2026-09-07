@@ -76,11 +76,8 @@ Simply click on a command and follow the instructions!
 """
         await update.message.reply_text(help_text, parse_mode='Markdown')
     
-    # ---------- CALCULATOR HANDLERS ----------
-    
     @staticmethod
     async def calc_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Start basic calculator"""
         await update.message.reply_text(
             "🔢 *Basic Calculator*\n\n"
             "Enter your expression (use +, -, ×, ÷, *, /, (, )):\n"
@@ -92,13 +89,10 @@ Simply click on a command and follow the instructions!
     
     @staticmethod
     async def calc_input(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Process calculator input"""
         expression = update.message.text
         result = calc_utils.basic_calc(expression)
         await update.message.reply_text(result)
         return ConversationHandler.END
-    
-    # ---------- PERCENTAGE HANDLERS ----------
     
     @staticmethod
     async def percentage_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -127,8 +121,6 @@ Simply click on a command and follow the instructions!
             await update.message.reply_text("❌ Please enter valid numbers!")
             return WAITING_FOR_PERCENTAGE
         return ConversationHandler.END
-    
-    # ---------- FRACTION HANDLERS ----------
     
     @staticmethod
     async def fraction_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -168,8 +160,6 @@ Simply click on a command and follow the instructions!
             return WAITING_FOR_FRACTION
         return ConversationHandler.END
     
-    # ---------- AVERAGE HANDLERS ----------
-    
     @staticmethod
     async def average_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
@@ -194,8 +184,6 @@ Simply click on a command and follow the instructions!
             await update.message.reply_text("❌ Please enter valid numbers!")
             return WAITING_FOR_AVERAGE
         return ConversationHandler.END
-    
-    # ---------- DISCOUNT HANDLERS ----------
     
     @staticmethod
     async def discount_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -225,8 +213,6 @@ Simply click on a command and follow the instructions!
             return WAITING_FOR_DISCOUNT
         return ConversationHandler.END
     
-    # ---------- AGE HANDLERS ----------
-    
     @staticmethod
     async def age_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
@@ -244,8 +230,6 @@ Simply click on a command and follow the instructions!
         result = calc_utils.age_calc(birth_date)
         await update.message.reply_text(result)
         return ConversationHandler.END
-    
-    # ---------- DATE HANDLERS ----------
     
     @staticmethod
     async def date_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -272,8 +256,6 @@ Simply click on a command and follow the instructions!
             await update.message.reply_text("❌ Invalid input! Please use YYYY-MM-DD format.")
             return WAITING_FOR_DATE
         return ConversationHandler.END
-    
-    # ---------- LENGTH HANDLERS ----------
     
     @staticmethod
     async def length_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -306,8 +288,6 @@ Simply click on a command and follow the instructions!
             return WAITING_FOR_LENGTH
         return ConversationHandler.END
     
-    # ---------- WEIGHT HANDLERS ----------
-    
     @staticmethod
     async def weight_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
@@ -338,8 +318,6 @@ Simply click on a command and follow the instructions!
             await update.message.reply_text("❌ Invalid value! Please enter a number.")
             return WAITING_FOR_WEIGHT
         return ConversationHandler.END
-    
-    # ---------- TEMPERATURE HANDLERS ----------
     
     @staticmethod
     async def temp_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -374,13 +352,11 @@ Simply click on a command and follow the instructions!
     
     @staticmethod
     async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Cancel ongoing conversation"""
         await update.message.reply_text("❌ Operation cancelled. Type /start to see commands.")
         return ConversationHandler.END
     
     @staticmethod
     async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Handle errors"""
         print(f"Update {update} caused error {context.error}")
         if update and update.effective_message:
             await update.effective_message.reply_text(
